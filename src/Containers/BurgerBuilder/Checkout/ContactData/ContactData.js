@@ -4,14 +4,47 @@ import Spinner from "../../../../Components/UI/Spinner/Spinner";
 import axios from "../../../../axios-orders";
 
 import classes from "./ContactData.module.css";
+import Input from "../../../../Components/UI/Input/Input";
 
 export default class ContactData extends Component {
   state = {
-    name: "",
-    email: "",
-    adress: {
-      street: "",
-      postCode: "",
+    orderForm: {
+      name: {
+        elementType: "input",
+        elementConfig: { type: "text", placeholder: "Your Name" },
+        value: "",
+      },
+      street: {
+        elementType: "input",
+        elementConfig: { type: "text", placeholder: "street" },
+        value: "",
+      },
+      zipCode: {
+        elementType: "input",
+        elementConfig: { type: "text", placeholder: "zipCode" },
+        value: "",
+      },
+      country: {
+        elementType: "input",
+        elementConfig: { type: "text", placeholder: "country" },
+        value: "",
+      },
+      email: {
+        elementType: "email",
+        elementConfig: { type: "text", placeholder: "E-mail" },
+        value: "",
+      },
+      deleveryMethod: {
+        elementType: "select",
+        elementConfig: {
+          placeholder: "Method",
+          options: [
+            { value: "fastest", displayValue: "Fastest" },
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
+        },
+        value: "",
+      },
     },
     loading: false,
   };
@@ -45,32 +78,20 @@ export default class ContactData extends Component {
   };
 
   render() {
+    const formElementArray = [];
+    for (let key in this.state.orderForm)
+      formElementArray.push({ id: key, config: this.state.orderForm[key] });
+
     let formComponent = (
       <form>
-        <input
-          className={classes.Input}
-          type="text"
-          name="name"
-          placeholder="your Name"
-        />
-        <input
-          className={classes.Input}
-          type="email"
-          name="email"
-          placeholder="your Email"
-        />
-        <input
-          className={classes.Input}
-          type="text"
-          name="street"
-          placeholder="Street"
-        />
-        <input
-          className={classes.Input}
-          type="text"
-          name="postalCode"
-          placeholder="Postal Code"
-        />
+        {formElementArray.map((el) => (
+          <Input
+            key={el.id}
+            elementType={el.config.elementType}
+            elementConfig={el.config.elementConfig}
+            value={el.config.value}
+          />
+        ))}
         <Button btnType="Success" clicked={this.orderHandler}>
           ORDER
         </Button>

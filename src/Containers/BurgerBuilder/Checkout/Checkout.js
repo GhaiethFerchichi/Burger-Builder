@@ -15,7 +15,6 @@ export default class Checkout extends Component {
         totalPrice = param[1];
       } else ingredients[param[0]] = +param[1];
     }
-    console.log(ingredients);
     this.setState({ ingredients, totalPrice: +totalPrice });
   }
 
@@ -28,7 +27,6 @@ export default class Checkout extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <CheckoutSummary
