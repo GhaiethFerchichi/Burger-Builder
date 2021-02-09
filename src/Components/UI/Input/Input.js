@@ -1,15 +1,21 @@
 import classes from "./Input.module.css";
 
 const Input = (props) => {
-  const { label, elementType, elementConfig, value } = props;
+  const { label, elementType, elementConfig, value, changeFn } = props;
+  const inputClasses = [classes.InputElement];
+
+  if (props.invalid && props.shouldValidate && props.touched) {
+    inputClasses.push(classes.Invalid);
+  }
 
   let inputElement;
   switch (elementType) {
     case "input":
       inputElement = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elementConfig}
+          onChange={changeFn}
           value={value}
         />
       );
@@ -17,8 +23,9 @@ const Input = (props) => {
     case "textarea":
       inputElement = (
         <textarea
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elementConfig}
+          onChange={changeFn}
           value={value}
         />
       );
@@ -27,12 +34,15 @@ const Input = (props) => {
     case "select":
       inputElement = (
         <select
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           placeholder={elementConfig.placeholder}
+          onChange={changeFn}
+          defaultValue={"DEFAULT"}
         >
-          <option value="none" disabled selected>
+          <option value="DEFAULT" disabled>
             {elementConfig.placeholder}
           </option>
+
           {elementConfig.options.map((el) => (
             <option key={el.value} value={el.value}>
               {el.displayValue}
@@ -45,9 +55,10 @@ const Input = (props) => {
     default:
       inputElement = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elementConfig}
           value={value}
+          onChange={changeFn}
         />
       );
       break;
